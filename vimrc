@@ -15,9 +15,16 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'maxmellon/vim-jsx-pretty'
   Plug 'bling/vim-airline'
   Plug 'arzg/vim-colors-xcode'
+
+  Plug 'dart-lang/dart-vim-plugin'
+  " Plug 'natebosch/vim-lsc'
+  " Plug 'natebosch/vim-lsc-dart'
+  " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
   " Plug 'vim-airline/vim-airline-themes'
-  Plug 'valloric/youcompleteme'
+  " Plug 'valloric/youcompleteme'
   " Plug 'tell-k/vim-autopep8'
+  Plug 'tasn/vim-tsx'
 
 call plug#end()
 
@@ -74,7 +81,7 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 syntax enable
-colorscheme elflord
+colorscheme night-owl
 
 " let g:airline_theme = 'night_owl'
 " let g:airline#extensions#tabline#enabled = 0
@@ -114,18 +121,36 @@ let g:autopep8_disable_show_diff=1
 
 "tab for completion:
 " use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~ '\s'
+" endfunction
+
+
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+
+" augroup vim-colors-xcode
+"     autocmd!
+" augroup END
+
+" autocmd vim-colors-xcode ColorScheme * hi Comment        cterm=italic gui=italic
+" autocmd vim-colors-xcode ColorScheme * hi SpecialComment cterm=italic gui=italic
+
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
 endfunction
+inoremap <expr> <tab> InsertTabWrapper()
+inoremap <s-tab> <c-n>
 
-
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-
-augroup vim-colors-xcode
-    autocmd!
-augroup END
-
-autocmd vim-colors-xcode ColorScheme * hi Comment        cterm=italic gui=italic
-autocmd vim-colors-xcode ColorScheme * hi SpecialComment cterm=italic gui=italic
+" dart
+let g:lsc_auto_map = v:true
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)

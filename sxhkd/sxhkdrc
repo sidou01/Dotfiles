@@ -1,0 +1,61 @@
+# Switch the location of a node
+super + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# Focus another node.
+super + {h,j,k,l}
+	bspc node -f {west,south,north,east}
+
+super + Return
+	kitty
+
+super + d
+	dmenu_run
+
+super + q
+	bspc node focused -k
+XF86Audio{Prev,Next}
+	mpc -q {prev,next}
+
+@XF86LaunchA
+	scrot -s -e 'image_viewer $f'
+
+super + shift + equal
+	sxiv -rt "$HOME/image"
+
+XF86LaunchB
+	xdotool selectwindow | xsel -bi
+
+
+super + alt + {0-9}
+	mpc -q seek {0-9}0%
+
+super + {alt,ctrl,alt + ctrl} + XF86Eject
+	sudo systemctl {suspend,reboot,poweroff}
+
+
+{_,shift + ,super + }XF86MonBrightness{Down,Up}
+	bright {-1,-10,min,+1,+10,max}
+
+super + alt + control + {h,j,k,l} ; {0-9}
+	bspc node @{west,south,north,east} -r 0.{0-9}
+
+super + alt + p
+	bspc config focus_follows_pointer {true,false}
+
+
+# super + {1-9}
+#     D={1-9}; \
+#     bspc desktop -f "$(bspc query -D -m | sed -n "$D p")"
+
+super + {ampersand,eacute,quotedbl,apostrophe,parenleft,minus,egrave,underscore,ccedilla,agrave}
+	bspc desktop -f {1,2,3,4,5,6,7,8,9}
+
+super + f
+	bspc node -t \~fullscreen
+
+super + n
+	rofi -show window
+
+super + o
+	rofi -show run
