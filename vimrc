@@ -9,22 +9,20 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'scrooloose/nerdtree'
   Plug 'jiangmiao/auto-pairs'
   Plug 'kien/ctrlp.vim'
-  Plug 'prettier/vim-prettier'
   Plug 'tpope/vim-commentary'
+
+  Plug 'prettier/vim-prettier'
   Plug 'haishanh/night-owl.vim'
   Plug 'maxmellon/vim-jsx-pretty'
+  Plug 'tasn/vim-tsx'
   Plug 'bling/vim-airline'
   Plug 'arzg/vim-colors-xcode'
 
-  Plug 'dart-lang/dart-vim-plugin'
-  " Plug 'natebosch/vim-lsc'
-  " Plug 'natebosch/vim-lsc-dart'
-  " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'valloric/youcompleteme'
+  Plug 'majutsushi/tagbar'
 
-  " Plug 'vim-airline/vim-airline-themes'
-  " Plug 'valloric/youcompleteme'
-  " Plug 'tell-k/vim-autopep8'
-  Plug 'tasn/vim-tsx'
+  Plug 'honza/vim-snippets'
+  Plug 'SirVer/ultisnips'
 
 call plug#end()
 
@@ -42,9 +40,6 @@ let g:prettier#autoformat = 1
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
 
 let mapleader =","
-set bg=light
-set go=a
-set mouse=a
 set nohlsearch
 set clipboard=unnamedplus
 
@@ -60,12 +55,6 @@ set number relativenumber
 set wildmode=longest,list,full
 " Disables automatic commenting on newline:
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-" Goyo plugin makes text more readable when writing prose:
-map <leader>f :Goyo \| set bg=light \| set linebreak<CR>
-
-" Spell-check set to <leader>o, 'o' for 'orthography':
-map <leader>o :setlocal spell! spelllang=en_us<CR>
 
 " Splits open at the bottom and right, 
 set splitbelow splitright
@@ -83,24 +72,22 @@ map <C-l> <C-w>l
 syntax enable
 colorscheme night-owl
 
-" let g:airline_theme = 'night_owl'
-" let g:airline#extensions#tabline#enabled = 0
-" let g:airline#extensions#branch#enabled = 1
-" let g:airline_left_sep = ' ❤  '
-" let g:airline_right_sep = ' 🟆  '
-" let g:airline_section_warning = '⚠️'
-" let g:airline_section_y = '🎶'
-" let g:airline_section_x = '🎶'
+let g:airline_theme = 'night_owl'
+let g:airline#extensions#tabline#enabled = 0
+let g:airline#extensions#branch#enabled = 1
+let g:airline_left_sep = ' ❤  '
+let g:airline_right_sep = ' 🟆  '
+let g:airline_section_warning = '⚠️'
+let g:airline_section_y = '🎶'
+let g:airline_section_x = '🎶'
 
 
-" let g:livepreview_previewer = 'zathura'
-map <leader>kk :!sh -xc 'pdflatex % && zathura %:r.pdf' <CR>
-map <leader>r :!sh -xc 'pdflatex main.tex' <CR>
-map <leader>b :!sh -xc 'python compile_refs.py main' <CR>
-
-
-set softtabstop=0 noexpandtab
-set shiftwidth=2
+" show existing tab with 4 spaces width
+set tabstop=4
+" when indenting with '>', use 4 spaces width
+set shiftwidth=4
+" On pressing tab, insert 4 spaces
+set expandtab
 
 
 " move lines up and down
@@ -112,30 +99,6 @@ vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
 
 
-" autopep8
-
-let g:autopep8_on_save = 1	
-let g:autopep8_disable_show_diff=1
-
-
-
-"tab for completion:
-" use <tab> for trigger completion and navigate to the next complete item
-" function! s:check_back_space() abort
-"   let col = col('.') - 1
-"   return !col || getline('.')[col - 1]  =~ '\s'
-" endfunction
-
-
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-
-" augroup vim-colors-xcode
-"     autocmd!
-" augroup END
-
-" autocmd vim-colors-xcode ColorScheme * hi Comment        cterm=italic gui=italic
-" autocmd vim-colors-xcode ColorScheme * hi SpecialComment cterm=italic gui=italic
 
 function! InsertTabWrapper()
     let col = col('.') - 1
@@ -148,9 +111,19 @@ endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 
-" dart
-let g:lsc_auto_map = v:true
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+
+
+"tagbar
+nnoremap <silent> <leader>b :TagbarToggle<CR>
+nnoremap <leader>g <C-]>
+
+" disable .ycm_extra_conf question
+let g:ycm_confirm_extra_conf = 0
+" Snippets are separated from the engine. Add this if you want them:
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-m>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
